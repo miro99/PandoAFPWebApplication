@@ -18,7 +18,10 @@
     <body id="pageBody">
         
         <jsp:useBean id="question" scope="session" class="Data.Question" />
-        <% question.Initialize("Q1");%>
+        <% question.Initialize(request.getParameter("QuestionID"));%>
+        
+        <jsp:useBean id="company" scope="session" class="Data.Company"/>
+        <% company.InitCompany(request.getParameter("Company"));%>
         
         <section id="wholeDocument">
             <section id="header">
@@ -31,10 +34,16 @@
                     <div id="companyInfo">
                         <div id="companyInfoTable">
                             <div id="coporateLogo">
-                                <img id="corporateLogoImage" 
-                                     src="Images/Oracle_Logo.png"/>
+                                
+                               <!-- <img id="corporateLogoImage" 
+                                     src="Images/Oracle_Logo.png"/>-->
+                             <img id="corporateLogoImage" 
+                                  src="<%= company.getLogoPath()%>">
                             </div>
-                            <div id="coporationName"><h1>Oracle</h1></div>
+                            <!--<div id="coporationName"><h1>Oracle</h1></div>-->
+                            <div id="coporationName">
+                                <h1><%=company.getCompanyName()%></h1>
+                            </div>
                         </div>
                     </div>
                 </div>
