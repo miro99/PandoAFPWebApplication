@@ -1,0 +1,244 @@
+/* 
+    Document   : pandoAFPSurveyCSS
+    Created on : Sep 20, 2013, 2:20:38 PM
+    Author     : ajmiro
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+#title {
+
+    display: table-cell;
+    vertical-align: middle;
+    color: white;
+    text-align: center;
+    padding-left: 30px;
+}
+
+#header {
+
+    height: auto;
+    display: table;
+    background: gray;
+    margin-bottom: 5px;
+}
+
+#pandoAFPLogo {
+
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+#headerFirstRow {
+
+    display: table;
+    width: 1022px;
+}
+
+#companyInfo {
+
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+#corporateLogoImage {
+
+    height: 40px;
+    width: 120px;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#companyInfoTable {
+
+    display: table;
+    margin-left: auto;
+}
+
+#coporateLogo {
+
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 5px;
+}
+
+#coporationName {
+
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#mainSectionTable {
+
+    display: table;
+}
+
+#filterColumn {
+
+    display: table-cell;
+    vertical-align: top;
+    background: lightgray;
+    width: 250px;
+}
+
+#detailArea {
+
+    display: table-cell;
+    width: 773px;
+    height: 768px;
+    padding-left: 5px;
+}
+
+#mainSection {
+
+    height: 768px;
+    width: 1024px;
+}
+
+#pageBody {
+
+}
+
+#wholeDocument {
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+#detailAreaHeader {
+
+    display: table;
+    width: 773px;   
+    color: white;
+    background: DarkBlue ;
+}
+
+#surveyQuestion {
+
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;    
+}
+
+#numberOfResponses {
+
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+#detailAreaData {
+
+    display: table;    
+    width: 774px;
+    height: 768px;
+    background: BlanchedAlmond ;
+}
+
+.dataItem {
+
+    padding: 20px;
+}
+
+.applicant {
+
+    display: table-cell;
+}
+
+.answer {
+
+    padding-left: 20px;
+    padding-top: 10px;
+    font-style: italic;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.applicantID {
+
+    display: table-cell;
+    color: red;
+    padding-left: 10px;
+}
+
+.applicantInfo {
+
+    display: table;
+}
+
+.viewSurvey {
+
+}
+
+#pageTable {
+
+    width: 774px;
+    display: table;
+}
+
+#pageSelectionTool {
+
+    display: table-footer-group;
+    text-align: center;
+}
+
+#pageLeft{
+    color: green;
+}
+
+#pageRight{
+    color: green;
+}
+
+.pageSelection{
+    padding: 5px;
+    color: green;
+}
+
+.filterTable {
+
+    display: table;
+    width: 100%;
+}
+
+.filterName {
+
+    display: table-cell;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.txtFilter {
+
+    display: table-footer-group;
+    margin-bottom: 5px;
+    width: 95%;
+}
+
+ul {
+
+    list-style-type: none;   
+    margin-left: -30px;
+    margin-right: 10px;
+}
+
+.item{
+    background-color: cornsilk;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px #000000;
+    padding-left: 5px;
+}
+
+#responseFilterText {
+    text-align: center;
+    color: darkblue;
+}
+

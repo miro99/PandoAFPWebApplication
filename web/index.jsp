@@ -1,0 +1,127 @@
+<%-- 
+    Document   : index
+    Created on : Sep 20, 2013, 2:18:09 PM
+    Author     : ajmiro
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" rel="stylesheet" href="pandoAFPSurveyCSS.css"/>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body id="pageBody">
+        <section id="wholeDocument">
+            <section id="header">
+                <div id="headerFirstRow">
+                    <div id="pandoAFPLogo">
+                        <img id="corporateLogoImage" src="Images/AFP_Logo.png">
+                    </div>
+                    <div id="title"><h2>Survey Response Analysis</h2></div>
+
+                    <div id="companyInfo">
+                        <div id="companyInfoTable">
+                            <div id="coporateLogo">
+                                <img id="corporateLogoImage" 
+                                     src="Images/Oracle_Logo.png"/>
+                            </div>
+                            <div id="coporationName"><h1>Oracle</h1></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="mainSection">
+                <section id="mainSectionTable">
+                    <div id="filterColumn">
+                        <h1 id="responseFilterText">Response Filters</h1>
+                        
+                        <ul>
+                            <li class="item">
+                                <div class="filterControl">                                    
+                                    <div class="filterTable">
+                                        <div class="filterName">Age:</div>                                        
+                                    </div>
+                                    <input class="txtFilter" type="text" 
+                                           name="filterText" value="" />
+                                </div>
+                            </li>
+                            
+                            <li class="item">
+                                <div class="filterControl">
+                                    <div class="filterTable">
+                                        <div class="filterName">Sex:</div>                                        
+                                    </div>
+                                    <input class="txtFilter" type="text" 
+                                           name="filterText" value="" />
+                                </div>
+                            </li>
+                            
+                            <li class="item">
+                                <div class="filterControl">
+                                    <div class="filterTable">
+                                        <div class="filterName">Weight:</div>                                        
+                                    </div>
+                                    <input class="txtFilter" type="text" 
+                                           name="filterText" value="" />
+                                </div>
+                            </li>                            
+                        </ul>
+                    </div>
+
+                    <div id="detailArea">
+                        <div id="detailAreaHeader">
+                            <div id="surveyQuestion">
+                                <h1>Q: What did you think about this survey?</h1>
+                            </div>
+                            <div id="numberOfResponses">
+                                <h1>528 responses</h1>                                    
+                            </div>
+                        </div>
+                        
+                        <div id="detailAreaData">                           
+                            <div class="dataItem">
+                                <div class="applicantInfo">
+                                    <div class="applicant">Applicant</div>
+                                    <div class="applicantID">
+                                        #6942
+                                        <button class="viewSurvey">View Survey</button>
+                                    </div></br>
+                                </div>
+                                                                
+                                <div class="answer">
+                                    "This is the best question I have ever seen..."
+                                </div>
+                            </div>
+                            
+                            <div class="dataItem">
+                                <div class="applicantInfo">
+                                    <div class="applicant">Applicant</div>
+                                    <div class="applicantID">#6943
+                                        <button class="viewSurvey">
+                                            View Survey
+                                        </button>
+                                    </div></br>                                    
+                                </div>
+                                <div class="answer">
+                                    "This survey made me laugh my a$$ off..."
+                                </div>
+                            </div>
+                            
+                            <div id="pageSelectionTool">                                
+                                <a id="pageLeft">&lt;</a>
+                                <a class="pageSelection">1</a>
+                                <a class="pageSelection">2</a>
+                                <a class="pageSelection">3</a>
+                                <a class="pageSelection">4</a>
+                                <a id="pageRight">&gt;</a>                                
+                            </div>
+                        </div>
+                    </div>                                        
+                </section>
+            </section>
+        </section>
+    </body>
+</html>
