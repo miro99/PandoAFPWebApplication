@@ -4,6 +4,9 @@
     Author     : ajmiro
 --%>
 
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.List"%>
+<%@page import="Data.Answer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +16,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body id="pageBody">
+        
+        <jsp:useBean id="question" scope="session" class="Data.Question" />
+        <% question.Initialize("Q1");%>
+        
         <section id="wholeDocument">
             <section id="header">
                 <div id="headerFirstRow">
@@ -74,41 +81,57 @@
                     <div id="detailArea">
                         <div id="detailAreaHeader">
                             <div id="surveyQuestion">
-                                <h1>Q: What did you think about this survey?</h1>
+                                <!--<h1>Q: What did you think about this survey?</h1>-->
+                                <h1>Q: <%= question.getQuestionText()%></h1>
                             </div>
                             <div id="numberOfResponses">
-                                <h1>528 responses</h1>                                    
+                                <!--<h1>528 responses</h1>-->
+                                <h1><%= question.getReponses()%> responses</h1>
                             </div>
                         </div>
                         
-                        <div id="detailAreaData">                           
-                            <div class="dataItem">
-                                <div class="applicantInfo">
-                                    <div class="applicant">Applicant</div>
-                                    <div class="applicantID">
-                                        #6942
-                                        <button class="viewSurvey">View Survey</button>
-                                    </div></br>
-                                </div>
-                                                                
-                                <div class="answer">
-                                    "This is the best question I have ever seen..."
-                                </div>
-                            </div>
+                        <div id="detailAreaData"> 
+                            
+                    
+                
+                <% 
+                    List<Answer> answers = question.getPageOfAnswers(1);
+                    Iterator it = answers.iterator();
+                    while(it.hasNext()){    
+                       Answer answer = (Answer) it.next();                                        
+                %>
+            
                             
                             <div class="dataItem">
                                 <div class="applicantInfo">
                                     <div class="applicant">Applicant</div>
+                                    <div class="applicantID">
+                                        <!--#6942-->
+                                        #<%= answer.getApplicantNumber()%>
+                                        <button class="viewSurvey">View Full Survey</button>
+                                    </div></br>
+                                </div>
+                                                                
+                                <div class="answer">
+                                    <!--"This is the best question I have ever seen..."-->
+                                    <%=answer.getAnswerText()%>
+                                </div>
+                            </div>
+                <%}%>
+                            
+                           <!-- <div class="dataItem">
+                                <div class="applicantInfo">
+                                    <div class="applicant">Applicant</div>
                                     <div class="applicantID">#6943
                                         <button class="viewSurvey">
-                                            View Survey
+                                            View Full Survey
                                         </button>
                                     </div></br>                                    
                                 </div>
                                 <div class="answer">
                                     "This survey made me laugh my a$$ off..."
                                 </div>
-                            </div>
+                            </div> -->
                             
                             <div id="pageSelectionTool">                                
                                 <a id="pageLeft">&lt;</a>
