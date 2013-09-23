@@ -6,6 +6,11 @@ package Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import Data.Database.DataStore;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,34 +21,35 @@ public class Question {
     private String questionText;
     private int reponses;
     private String questionID;
+    private DataStore dataStore;
+    private Company company;
     
     /**
      *
      * @param questionID
      */
-    public Question() {
+    public Question() {        
     }
     
-    public void Initialize(String questionID){
+    public void Initialize(String questionID, Company company){
+        StringBuilder sqlStatement = new StringBuilder("Select Q1,")
+                .append(questionID).append(" From survey_data WHERE Q10 = ")
+                .append("'").append(company.getCompanyName()).append("'");
+       
+        StringBuilder sqlCountStatement = new StringBuilder("Select Count(")
+                .append(questionID).append(") From survey_data WHERE Q10 = ")
+                .append("'").append(company.getCompanyName()).append("'");
+
+        this.dataStore = new DataStore(sqlStatement.toString(), sqlCountStatement.toString());
         this.questionID = questionID;
-        this.questionText = getQuestionText(questionID);
-        this.reponses = getNumberOfResponses(questionID);
+        this.questionText = getQuestionText(questionID);        
+        this.reponses = getNumberOfResponses();
+        this.company = company;
     }
 
-    private String getQuestionText(String questionID) {
-        
-        if (questionID != null) {
-            if (questionID.equals("Q1")) {
-                return "Do you like your eggs sunny side up?";
-            }
-            
-            if(questionID.equals("Q2")) {
-                return "Which came first. The chicken or the egg?";
-            }
-            
-            return "What's up doc?";
-        }
-        return "What did you think of this survey [DYNAMIC]";
+    private String getQuestionText(String questionID) {       
+        String question = dataStore.GetColumnNameByID(questionID);
+        return question;        
     }
 
     /**
@@ -53,59 +59,61 @@ public class Question {
         return questionText;
     }
 
-    private int getNumberOfResponses(String questionID) {
-        if (questionID != null) {
-            if (questionID.equals("Q1")) {
-                return 500;
-            }
-            
-            if(questionID.equals("Q2")) {
-                return 250;
-            }
-            
-            return 10;
-        }
-        return 20;
+//    private int getNumberOfResponses(String questionID) {
+    private int getNumberOfResponses() {        
+        return dataStore.GetNumberOfResults();        
     }
 
     /**
      * @return the reponses
      */
-    public int getReponses() {
+    public int getResponses() {
         return reponses;
     }
     
-    public List<Answer> getPageOfAnswers(int page){
+    public List<Answer> getPageOfAnswers(int pageNumber){
         List<Answer> answers = new ArrayList<Answer>();
-        
-         if (questionID != null) {
-            if ("q1".equals(questionID.toLowerCase())) {
-                Answer answer1 = 
-                        new Answer("694123", "This is a dynamic answer.");
-                Answer answer2 = 
-                        new Answer("567432", "Wow this place is great.");
-                answers.add(answer1);
-                answers.add(answer2);
+        try {                        
+            ResultSet page = dataStore.GetPage(pageNumber);
+            while (page.next()) {
+                Answer ans = new Answer(page.getString(1), page.getString(2));
+                answers.add(ans);
             }
             
-            if(questionID.toLowerCase().equals("q2")) {
-                Answer answer1 =
-                        new Answer("659843", "This is crazy.");
-                Answer answer2 =
-                        new Answer("984332", "Did not like it at all.");
-                
-                Answer answer3 =
-                        new Answer("854697", "This is wonderful.");
-                Answer answer4 =
-                        new Answer("592301", "Love it.");
-                
-                answers.add(answer1);
-                answers.add(answer2);
-                answers.add(answer3);
-                answers.add(answer4);
-            }                        
-        }        
-       
+    //         if (questionID != null) {
+    //            if ("q1".equals(questionID.toLowerCase())) {
+    //                Answer answer1 = 
+    //                        new Answer("694123", "This is a dynamic answer.");
+    //                Answer answer2 = 
+    //                        new Answer("567432", "Wow this place is great.");
+    //                answers.add(answer1);
+    //                answers.add(answer2);
+    //            }
+    //            
+    //            if(questionID.toLowerCase().equals("q2")) {
+    //                Answer answer1 =
+    //                        new Answer("659843", "This is crazy.");
+    //                Answer answer2 =
+    //                        new Answer("984332", "Did not like it at all.");
+    //                
+    //                Answer answer3 =
+    //                        new Answer("854697", "This is wonderful.");
+    //                Answer answer4 =
+    //                        new Answer("592301", "Love it.");
+    //                
+    //                answers.add(answer1);
+    //                answers.add(answer2);
+    //                answers.add(answer3);
+    //                answers.add(answer4);
+    //            }                        
+    //        }                               
+        } catch (SQLException ex) {
+            Logger.getLogger(Question.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return answers;
-    }
+    }   
+    
+    public int getTotalPages(){
+        return dataStore.GetTotalPages();
+    }            
 }

@@ -16,13 +16,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body id="pageBody">
-        
-        <jsp:useBean id="question" scope="session" class="Data.Question" />
-        <% question.Initialize(request.getParameter("QuestionID"));%>
-        
+
         <jsp:useBean id="company" scope="session" class="Data.Company"/>
         <% company.InitCompany(request.getParameter("Company"));%>
-        
+       
+        <jsp:useBean id="question" scope="session" class="Data.Question" />
+        <% question.Initialize(request.getParameter("QuestionID"), company);%>
+                
         <section id="wholeDocument">
             <section id="header">
                 <div id="headerFirstRow">
@@ -95,7 +95,7 @@
                             </div>
                             <div id="numberOfResponses">
                                 <!--<h1>528 responses</h1>-->
-                                <h1><%= question.getReponses()%> responses</h1>
+                                <h1><%= question.getResponses()%> responses</h1>
                             </div>
                         </div>
                         
@@ -104,7 +104,7 @@
                     
                 
                 <% 
-                    List<Answer> answers = question.getPageOfAnswers(1);
+                    List<Answer> answers = question.getPageOfAnswers(Integer.parseInt(request.getParameter("Page")));                    
                     Iterator it = answers.iterator();
                     while(it.hasNext()){    
                        Answer answer = (Answer) it.next();                                        
@@ -144,10 +144,16 @@
                             
                             <div id="pageSelectionTool">                                
                                 <a id="pageLeft">&lt;</a>
-                                <a class="pageSelection">1</a>
+                                <% for(int i=1; i <= question.getTotalPages(); i++){                                                                                                                                       
+                                %>
+                                <a class="pageSelection" href="http://192.168.254.141:8080/PandoAFPWebApplication/index.jsp?Company=<%=request.getParameter("Company")%>&QuestionID=<%=request.getParameter("QuestionID")%>&Page=<%=i%>"><%=i%></a>
+                                <%
+                                }
+                                %>
+                                <!--<a class="pageSelection">1</a>
                                 <a class="pageSelection">2</a>
                                 <a class="pageSelection">3</a>
-                                <a class="pageSelection">4</a>
+                                <a class="pageSelection">4</a> -->
                                 <a id="pageRight">&gt;</a>                                
                             </div>
                         </div>

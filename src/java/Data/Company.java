@@ -27,8 +27,9 @@ public class Company {
                 return;
             }
         }
-        logoPath = "Images/sugarcrm_logo.png";
-        companyName = "SugarCrm";
+        //logoPath = "Images/sugarcrm_logo.png";
+        logoPath = "Images/InfoRelianceLogo.jpg";
+        companyName = "InfoReliance";
     }
 
     /**
