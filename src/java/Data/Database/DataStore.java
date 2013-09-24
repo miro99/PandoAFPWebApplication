@@ -8,6 +8,12 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 /**
  *
  * @author ajmiro
@@ -15,6 +21,9 @@ import java.util.logging.Logger;
 public class DataStore {
     private static Connection connection; //connection to the database    
     private static int pageSize = 8;
+    
+    //@Resource(name="jdbc/pando_afp")
+    private DataSource ds;
     
     /**
      * @return the connection
@@ -33,6 +42,17 @@ public class DataStore {
     private PreparedStatement countResultsStatement;
 
     public DataStore(String sqlStatment, String sqlCountStatement) {
+        try {
+            
+            Context ctx = new InitialContext();
+            ds = (DataSource)ctx.lookup("java:comp/env/jdbc/pando_afp");            
+            connection = ds.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
+            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         this.connectionString = "jdbc:mysql://localhost:3306/pando_afp";
         this.userName = "root";
         this.password = "0foobar0";
@@ -139,16 +159,18 @@ public class DataStore {
             result.next();
             columnName = result.getString(1);
         } catch (SQLException ex) {
-            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataStore.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         return columnName;
     }
     
     public void Close(){
         try {
-            connection.close();
+            connection.close();            
         } catch (SQLException ex) {
-            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataStore.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 }
