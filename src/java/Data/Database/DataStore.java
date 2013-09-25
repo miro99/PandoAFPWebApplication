@@ -8,11 +8,13 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
+//import javax.annotation.Resource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import com.mysql.jdbc.Driver;
+
 
 /**
  *
@@ -31,10 +33,7 @@ public class DataStore {
     public static Connection getConnection() {
         return connection;
     }
-    private String connectionString, 
-                    userName, 
-                    password, 
-                    sqlStatement,
+    private String  sqlStatement,
                     sqlCountStatement;
     
     private int numberOfPages = -1;
@@ -42,10 +41,10 @@ public class DataStore {
     private PreparedStatement countResultsStatement;
 
     public DataStore(String sqlStatment, String sqlCountStatement) {
-        try {
-            
-            Context ctx = new InitialContext();
-            ds = (DataSource)ctx.lookup("java:comp/env/jdbc/pando_afp");            
+        try {            
+            Context initailContext = new InitialContext();
+            Context ctx = (Context)initailContext.lookup("java:comp/env");            
+            ds = (DataSource)ctx.lookup("jdbc/pando_afp");
             connection = ds.getConnection();
         } catch (SQLException ex) {
             Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,24 +52,8 @@ public class DataStore {
             Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        this.connectionString = "jdbc:mysql://localhost:3306/pando_afp";
-        this.userName = "root";
-        this.password = "0foobar0";
         this.sqlStatement = sqlStatment;
         this.sqlCountStatement = sqlCountStatement;
-        
-        if (connection == null) {
-            try {
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                connection = DriverManager.getConnection(this.connectionString, userName, password);
-            } catch (SQLException ex) {
-                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
         try {
             countResultsStatement = 
                             connection.prepareStatement(this.sqlCountStatement);
@@ -89,7 +72,7 @@ public class DataStore {
             } catch (SQLException ex) {
                 Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }                       
         return numberOfResults;
     }
     

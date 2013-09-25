@@ -16,6 +16,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body id="pageBody">
+        
+       
 
         <jsp:useBean id="company" scope="session" class="Data.Company"/>
         <% company.InitCompany(request.getParameter("Company"));%>
