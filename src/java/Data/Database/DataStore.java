@@ -5,60 +5,35 @@
 package Data.Database;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-//import javax.annotation.Resource;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import java.util.logging.*;
+import javax.naming.*;
 import javax.sql.DataSource;
-import com.mysql.jdbc.Driver;
-
 
 /**
  *
  * @author ajmiro
  */
 public class DataStore {
-    private static Connection connection; //connection to the database    
-    private static int pageSize = 8;
-    
-    //@Resource(name="jdbc/pando_afp")
-    private DataSource ds;
-    
-    /**
-     * @return the connection
-     */
-    public static Connection getConnection() {
-        return connection;
-    }
+    private static Connection databaseConnection = null; //connection to the database    
+    private static int pageSize = 8;        
+    private DataSource ds;       
     private String  sqlStatement,
-                    sqlCountStatement;
-    
+                    sqlCountStatement;    
     private int numberOfPages = -1;
     private int numberOfResults = -1;
     private PreparedStatement countResultsStatement;
 
     public DataStore(String sqlStatment, String sqlCountStatement) {
-        try {            
-            Context initailContext = new InitialContext();
-            Context ctx = (Context)initailContext.lookup("java:comp/env");            
-            ds = (DataSource)ctx.lookup("jdbc/pando_afp");
-            connection = ds.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NamingException ex) {
-            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+                
         this.sqlStatement = sqlStatment;
         this.sqlCountStatement = sqlCountStatement;
-        try {
+        Connection connection = getDatabaseConnection();
+        try {            
             countResultsStatement = 
                             connection.prepareStatement(this.sqlCountStatement);
         } catch (SQLException ex) {
-            Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+            Logger
+            .getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -70,7 +45,9 @@ public class DataStore {
                     numberOfResults = result.getInt(1);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+                Logger
+                .getLogger(DataStore.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         }                       
         return numberOfResults;
@@ -105,19 +82,21 @@ public class DataStore {
                 " LIMIT " + 
                 pageNumber + 
                 ", " + 
-                pageSize;               
+                pageSize;    
+        
+        Connection connection = getDatabaseConnection();
         try {
             PreparedStatement statement = 
                 connection.prepareStatement(pagedSqlStatement);
             
             ResultSet result = statement.executeQuery();
-            
+                       
             return result;
         } catch (SQLException ex) {
             Logger
                 .getLogger(DataStore.class.getName())
                     .log(Level.SEVERE, null, ex);
-        }   
+        }
         return null;
     }
 
@@ -131,6 +110,7 @@ public class DataStore {
     public String GetColumnNameByID(String id){
         
         String columnName = "";
+        Connection connection = getDatabaseConnection();
         try {
             StringBuilder sb = 
                  new StringBuilder("Select question from column_key Where column_key.key = '")
@@ -145,15 +125,40 @@ public class DataStore {
             Logger.getLogger(DataStore.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
+//        finally{
+//            try {            
+//                connection.close();
+//            } catch (SQLException ex) {
+//                Logger.getLogger(DataStore.class.getName())
+//                        .log(Level.SEVERE, null, ex);
+//            }
+//        }
         return columnName;
     }
+       
+    private Connection getDatabaseConnection() {        
+        if (databaseConnection == null) {
+            try {                
+                Context initailContext = new InitialContext();
+                Context ctx = (Context) initailContext.lookup("java:comp/env");                
+                ds = (DataSource) ctx.lookup("jdbc/pando_afp");
+                databaseConnection = ds.getConnection();                
+            } catch (SQLException ex) {
+                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NamingException ex) {
+                Logger.getLogger(DataStore.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        
+        return databaseConnection;
+    }
     
-    public void Close(){
+    public void Close(){        
         try {
-            connection.close();            
+            databaseConnection.close();
+            databaseConnection = null;
         } catch (SQLException ex) {
             Logger.getLogger(DataStore.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
-    }
+    }           
 }

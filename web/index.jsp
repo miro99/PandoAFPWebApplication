@@ -164,4 +164,5 @@
             </section>
         </section>                                   
     </body>
+    <% question.Close();%>
 </html>

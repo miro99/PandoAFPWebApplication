@@ -40,7 +40,8 @@ public class Question {
                 .append(questionID).append(") From survey_data WHERE Q10 = ")
                 .append("'").append(company.getCompanyName()).append("'");
 
-        this.dataStore = new DataStore(sqlStatement.toString(), sqlCountStatement.toString());
+        this.dataStore = new DataStore(sqlStatement.toString(), 
+                sqlCountStatement.toString());
         this.questionID = questionID;
         this.questionText = getQuestionText(questionID);        
         this.reponses = getNumberOfResponses();
@@ -78,42 +79,20 @@ public class Question {
             while (page.next()) {
                 Answer ans = new Answer(page.getString(1), page.getString(2));
                 answers.add(ans);
-            }
-            
-    //         if (questionID != null) {
-    //            if ("q1".equals(questionID.toLowerCase())) {
-    //                Answer answer1 = 
-    //                        new Answer("694123", "This is a dynamic answer.");
-    //                Answer answer2 = 
-    //                        new Answer("567432", "Wow this place is great.");
-    //                answers.add(answer1);
-    //                answers.add(answer2);
-    //            }
-    //            
-    //            if(questionID.toLowerCase().equals("q2")) {
-    //                Answer answer1 =
-    //                        new Answer("659843", "This is crazy.");
-    //                Answer answer2 =
-    //                        new Answer("984332", "Did not like it at all.");
-    //                
-    //                Answer answer3 =
-    //                        new Answer("854697", "This is wonderful.");
-    //                Answer answer4 =
-    //                        new Answer("592301", "Love it.");
-    //                
-    //                answers.add(answer1);
-    //                answers.add(answer2);
-    //                answers.add(answer3);
-    //                answers.add(answer4);
-    //            }                        
-    //        }                               
+            }                                           
         } catch (SQLException ex) {
-            Logger.getLogger(Question.class.getName()).log(Level.SEVERE, null, ex);
+            Logger
+                .getLogger(Question.class.getName()).log(Level.SEVERE, null, ex);
         }
         return answers;
     }   
     
     public int getTotalPages(){
         return dataStore.GetTotalPages();
-    }            
+    }
+    
+    public void Close()
+    {
+        this.dataStore.Close();
+    }
 }
