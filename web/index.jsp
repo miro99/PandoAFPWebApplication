@@ -148,7 +148,7 @@
                                 <a id="pageLeft">&lt;</a>
                                 <% for(int i=1; i <= question.getTotalPages(); i++){                                                                                                                                       
                                 %>
-                                <a class="pageSelection" href="http://192.168.254.141:8080/PandoAFPWebApplication/index.jsp?Company=<%=request.getParameter("Company")%>&QuestionID=<%=request.getParameter("QuestionID")%>&Page=<%=i%>"><%=i%></a>
+                                <a class="pageSelection" href="http://localhost:8080/PandoAFPWebApplication/index.jsp?Company=<%=request.getParameter("Company")%>&QuestionID=<%=request.getParameter("QuestionID")%>&Page=<%=i%>"><%=i%></a>
                                 <%
                                 }
                                 %>
