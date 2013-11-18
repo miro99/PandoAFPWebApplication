@@ -24,12 +24,12 @@ public class DataStore {
     private PreparedStatement countResultsStatement;
 
     public DataStore(String sqlStatment, String sqlCountStatement) {
-                
+        initDataSource();
         this.sqlStatement = sqlStatment;
         this.sqlCountStatement = sqlCountStatement;
         Connection connection = getDatabaseConnection();
         prepareCountResultsStatement(connection);
-        initDataSource();
+        //initDataSource();
     }
     
     public int GetNumberOfResults(){
