@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
@@ -8,6 +9,7 @@ and open the template in the editor.
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
+    <jsp:useBean id="quest" class="Data.Question" scope="page"/>
     <body>
         <form action="Search" method="POST">
             <section id="keyword">     
@@ -17,9 +19,12 @@ and open the template in the editor.
                         <div id="surveyQuestionTitle">
                             Question: 
                         </div>
-                        <div id="surveyQuestionSelector">
-                            <select>
-                                <option>${question.questionText}</option>                                    
+                        <div id="surveyQuestionSelector">                           
+                            <select name="questionSelect" id="questionSelector">                                    
+                                <c:forEach var="item" items="${quest.allQuestions}">
+                                    <option value="${item.questionID}">${item.questionText}</option>                                    
+                                </c:forEach>
+                                <!--<option value="${question.questionID}">${question.questionText}</option>-->
                             </select>
                         </div>
                     </div>

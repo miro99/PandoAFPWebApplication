@@ -9,8 +9,10 @@ import java.util.List;
 import Data.Database.DataStore;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 /**
  *
@@ -23,12 +25,13 @@ public class Question {
     private String questionID;
     private DataStore dataStore;
     private Company company;
+    private Question[] allQuestions;
     
     /**
      *
      * @param questionID
      */
-    public Question() {        
+    public Question() {                
     }
     
     public void Initialize(String questionID, Company company){
@@ -46,6 +49,32 @@ public class Question {
         this.questionText = getQuestionText(questionID);        
         this.reponses = getNumberOfResponses();
         this.company = company;
+    }
+    
+    public Question[] getAllQuestions(){
+        ArrayList<Question> questions = new ArrayList<Question>();
+        String sqlString = "SELECT * FROM column_key";
+        String sqlCountString = "SELECT COUNT('KEY') FROM column_key";
+        DataStore ds = new DataStore(sqlString, sqlCountString);
+        int totalPages = ds.GetTotalPages();
+        for (int i = 1; i <= totalPages; i++) {
+            try {
+                ResultSet result = ds.GetPage(i);
+                while (result.next()) {
+                    String questionID = result.getString("key");
+                    String question = result.getString("question");
+                    Question q = new Question();
+                    q.questionID = questionID;
+                    q.questionText = question;
+                    questions.add(q);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Question.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        Question[] allQuestions = new Question[questions.size()];
+        questions.toArray(allQuestions);
+        return allQuestions;
     }
 
     private String getQuestionText(String questionID) {       
@@ -94,5 +123,12 @@ public class Question {
     public void Close()
     {
         this.dataStore.Close();
+    }        
+
+    /**
+     * @return the questionID
+     */
+    public String getQuestionID() {
+        return questionID;
     }
 }
