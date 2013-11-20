@@ -26,30 +26,14 @@
         <% question.Initialize(request.getParameter("QuestionID"), company);%>
                 
         <section id="wholeDocument">
-            <section id="header">
-                <div id="headerFirstRow">
-                    <div id="pandoAFPLogo">
-                        <img id="corporateLogoImage" src="Images/AFP_Logo.png">
-                    </div>
-                    <div id="title"><h2>Survey Response Analysis</h2></div>
-
-                    <div id="companyInfo">
-                        <div id="companyInfoTable">
-                            <div id="coporateLogo">
-                                
-                               <!-- <img id="corporateLogoImage" 
-                                     src="Images/Oracle_Logo.png"/>-->
-                             <img id="corporateLogoImage" 
-                                  src="<%= company.getLogoPath()%>">
-                            </div>
-                            <!--<div id="coporationName"><h1>Oracle</h1></div>-->
-                            <div id="coporationName">
-                                <h1><%=company.getCompanyName()%></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <section id="header">                
+                <jsp:include page="Reusable_Parts/SiteHeader.jsp">
+                    <jsp:param name="pageTitle" value="Survey Response Analysis" />
+                </jsp:include>                               
             </section>
+            <div id="headerBottom">
+                <jsp:include page="Reusable_Parts/SearchBar.jsp"/>
+            </div>
 
             <section id="mainSection">
                 <section id="mainSectionTable">
@@ -80,7 +64,7 @@
                             <li class="item">
                                 <div class="filterControl">
                                     <div class="filterTable">
-                                        <div class="filterName">Weight:</div>                                        
+                                        <div class="filterName">Weight:</div>
                                     </div>
                                     <input class="txtFilter" type="text" 
                                            name="filterText" value="" />
@@ -90,16 +74,16 @@
                     </div>
 
                     <div id="detailArea">
-                        <div id="detailAreaHeader">
-                            <div id="surveyQuestion">
-                                <!--<h1>Q: What did you think about this survey?</h1>-->
-                                <h1>Q: <%= question.getQuestionText()%></h1>
+                        <!-- <div id="detailAreaHeader">
+                            <div id="surveyQuestion">                                
+                                <select>
+                                    <option><%= question.getQuestionText()%></option>
+                                </select>
                             </div>
                             <div id="numberOfResponses">
-                                <!--<h1>528 responses</h1>-->
                                 <h1><%= question.getResponses()%> responses</h1>
                             </div>
-                        </div>
+                        </div> -->
                         
                         <div id="detailAreaData"> 
                             
