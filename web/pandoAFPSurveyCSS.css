@@ -138,6 +138,7 @@ root {
 #surveyQuestionTitle{
     display: table-cell;  
     color: white;
+    vertical-align: middle;    
 }
 
 #surveyQuestion{
@@ -146,7 +147,10 @@ root {
 
 #surveyQuestionSelector{
     margin-left: 5px;
+    color: white;
+    font-style: italic;    
 }
+
 
 #numberOfResponses {
 
@@ -340,3 +344,37 @@ margin-left: auto;
 select {
     width: 600px;
 }
+
+#questionList{
+    background: activeborder;
+    width: 750px;
+    height: 500px;
+    position: absolute;
+    z-index: 10;
+    left: 500px;
+    opacity: 1;
+    visibility: hidden;
+    overflow: scroll;
+    padding: 5px;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+#questions{
+    margin: 10px;
+}
+
+#questionListHeader{
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    color: white;
+    font-size: x-large;
+}
+
+#tablerow{
+    border: cornflowerblue;
+    border-style: solid;
+    margin: 5px;
+    background: cornflowerblue;
+}
+

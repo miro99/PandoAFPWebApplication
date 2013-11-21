@@ -3,7 +3,7 @@
     Created on : Sep 20, 2013, 2:18:09 PM
     Author     : ajmiro
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@page import="Data.Answer"%>
@@ -15,10 +15,8 @@
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
-    <body id="pageBody">
-        
-       
-
+    <jsp:useBean id="quest" class="Data.Question" scope="page"/>
+    <body id="pageBody">               
         <jsp:useBean id="company" scope="session" class="Data.Company"/>
         <% company.InitCompany(request.getParameter("Company"));%>
        
@@ -35,6 +33,18 @@
                 <jsp:include page="Reusable_Parts/SearchBar.jsp"/>
             </div>
 
+            <div id="testcontainer">
+                <div id="questionList">
+                    <div id="questionListHeader">Select</div>
+                    <div id="questions">                        
+                            <c:forEach var="item" items="${quest.allQuestions}">                                                                    
+                                <div id="tablerow">
+                                    <button value="${item.questionID} | ${item.questionText}" onclick="selectQuestion(this)"> select</button>
+                                ${item.questionText}
+                                </div>                                    
+                            </c:forEach>                        
+                    </div>
+                </div>
             <section id="mainSection">
                 <section id="mainSectionTable">
                     <div id="filterColumn">
@@ -89,12 +99,12 @@
                             
                     
                 
-                <% 
-                    List<Answer> answers = question.getPageOfAnswers(Integer.parseInt(request.getParameter("Page")));                    
-                    Iterator it = answers.iterator();
-                    while(it.hasNext()){    
-                       Answer answer = (Answer) it.next();                                        
-                %>
+                            <% 
+                                List<Answer> answers = question.getPageOfAnswers(Integer.parseInt(request.getParameter("Page")));                    
+                                Iterator it = answers.iterator();
+                                while(it.hasNext()){    
+                                   Answer answer = (Answer) it.next();                                        
+                            %>
             
                             
                             <div class="dataItem">
@@ -103,7 +113,7 @@
                                     <div class="applicantID">
                                         <!--#6942-->
                                         #<%= answer.getApplicantNumber()%>
-                                        <button class="viewSurvey">View Full Survey</button>
+                                        <button class="viewSurvey" style="visibility: hidden;">View Full Survey</button>
                                     </div></br>
                                 </div>
                                                                 
@@ -113,21 +123,7 @@
                                 </div>
                             </div>
                 <%}%>
-                            
-                           <!-- <div class="dataItem">
-                                <div class="applicantInfo">
-                                    <div class="applicant">Applicant</div>
-                                    <div class="applicantID">#6943
-                                        <button class="viewSurvey">
-                                            View Full Survey
-                                        </button>
-                                    </div></br>                                    
-                                </div>
-                                <div class="answer">
-                                    "This survey made me laugh my a$$ off..."
-                                </div>
-                            </div> -->
-                            
+                                                                                   
                             <div id="pageSelectionTool">                                
                                 <a id="pageLeft">&lt;</a>
                                 <% for(int i=1; i <= question.getTotalPages(); i++){                                                                                                                                       
@@ -136,16 +132,13 @@
                                 <%
                                 }
                                 %>
-                                <!--<a class="pageSelection">1</a>
-                                <a class="pageSelection">2</a>
-                                <a class="pageSelection">3</a>
-                                <a class="pageSelection">4</a> -->
-                                <a id="pageRight">&gt;</a>                                
+                                <a id="pageRight">&gt;</a>                           
                             </div>
                         </div>
                     </div>                                        
-                </section>
+                </section>                                                
             </section>
+            </div>
         </section>                                   
     </body>
     <% question.Close();%>

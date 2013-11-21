@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
@@ -6,10 +5,52 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- jQuery library (served from Google) -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>       
+        <script>
+             var companyID = '${company.companyName}';
+             var questionID = '${param.QuestionID}';
+            function loadQuestion()
+            {                                 
+                  //TEST
+                  document.getElementById("questionList").style.visibility ="visible";
+                  document.getElementById("mainSection").style.opacity =".5";
+            }
+               
+               function selectQuestion(objButton)
+               {
+                   var str = objButton.value;
+                   var res = str.split("|")
+                   document.getElementById("surveyQuestionSelector").innerHTML = res[1];
+                   document.getElementById("questionList").style.visibility = "hidden";
+                   document.getElementById("mainSection").style.opacity ="1";
+                   
+                    var xmlhttp;
+                    if (window.XMLHttpRequest)
+                      {// code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp=new XMLHttpRequest();
+                      }
+                    else
+                      {// code varfor IE6, IE5
+                        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                      }
+                      xmlhttp.onreadystatechange = function()
+                                    {
+                                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                                        {
+                                            //document.getElementById("surveyQuestionSelector").innerHTML = xmlhttp.responseText;
+                                        }
+                                    }
+
+                      xmlhttp.open("GET", "getQuestion?Company="+companyID+"&QuestionID="+questionID, true);
+                      xmlhttp.send();
+
+                   //loadQuestion();
+               }
+        </script>
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <jsp:useBean id="quest" class="Data.Question" scope="page"/>
+    </head>   
     <body>
         <form action="Search" method="POST">
             <section id="keyword">     
@@ -17,26 +58,14 @@ and open the template in the editor.
                     <!--<h1>Q: What did you think about this survey?</h1>-->
                     <div id="surveyTable">
                         <div id="surveyQuestionTitle">
-                            Question: 
+                            <div id="buttondiv">                    
+                                <button type="button" onclick="loadQuestion()">?</button>
+                            </div>
                         </div>
                         <div id="surveyQuestionSelector">                           
-                            <select name="questionSelect" id="questionSelector">                                    
-                                <c:forEach var="item" items="${quest.allQuestions}">
-                                    <option value="${item.questionID}">${item.questionText}</option>                                    
-                                </c:forEach>
-                                <!--<option value="${question.questionID}">${question.questionText}</option>-->
-                            </select>
-                        </div>
+                        </div>                        
                     </div>
-                </div>
-                <div id="text">Search:</div>
-                
-                <div id="txtInput">
-                    <input id="keywordInput" type="text" name="txtkeyword" value="" />
-                </div>
-                <div id="buttondiv">
-                    <input type="submit" value="GO"/>
-                </div>
+                </div>               
             </section>
         </form>            
     </body>
